@@ -26,7 +26,8 @@ enum class BackgroundColor : int {
     BrightYellow = 103
 };
 
-bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int& remainingTries)
+
+bool CheckLetters::CheckWord(std::string word, std::string playerGuess, int& remainingTries, std::vector<char>& remainingLetters)
 {
     bool hasGuessedCorrectWord = true;
     std::pmr::unordered_map<char, int> letterCounter;
@@ -47,9 +48,12 @@ bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int&
                 letterCounter[playerGuess[i]]--;
             }
 
-            bool CaseInsensitiveCompare = std::tolower(playerGuess[i]) == std::tolower(word[i]);
+            //Remove current letter from available letters
+            remainingLetters.erase(std::remove(remainingLetters.begin(), remainingLetters.end(), std::toupper(playerGuess[i])), remainingLetters.end());
+
+            bool caseInsensitiveCompare = std::tolower(playerGuess[i]) == std::tolower(word[i]);
             
-            if (CaseInsensitiveCompare && letterIsValid)
+            if (caseInsensitiveCompare && letterIsValid)
             {
                 std::cout << BACKGROUND(BackgroundColor::Green,playerGuess[i]);
             }                
@@ -68,11 +72,34 @@ bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int&
     }
     else
     {            
-        std::cout << "Please type a " << word.length() << " letter word.";
+        std::cout << "Please type a " << word.length() << " letter word." ;
         hasGuessedCorrectWord = false;
     }
 
+    if (!hasGuessedCorrectWord)
+    {
+        //Type out un-used letters
+        std::string letterString = "[ ";
+        for (auto curChar : remainingLetters)
+        {
+            letterString += curChar;
+            letterString += ',';
+        }
+        letterString[letterString.length()-1] = ' '; //Remove trailing ','
+
+        std::cout << std::endl<< "Un-used letters: " + letterString + "]";
+    }    
+
     return hasGuessedCorrectWord;
+}
+
+
+void CheckLetters::CreateAlphabeteVector(const std::string& alphabet, OUT std::vector<char>* vec)
+{
+    for (int i = 0; i < alphabet.length(); ++i)
+    {
+        vec->push_back(std::toupper(alphabet[i]));
+    }
 }
 
 std::pmr::unordered_map<char, int> CheckLetters::MakeHashMapOfLetterCount(std::string word)

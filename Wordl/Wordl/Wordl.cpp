@@ -27,16 +27,25 @@ enum class BackgroundColor : int {
     BrightYellow = 103
 };
 
-void GameOver(bool hasWon);
+void GameOver(bool hasWon, std::string str);
+void CreateAlphabeteVector(const std::string& alphabet, std::vector<char>* vec);
+
 
 int main()
 {
+    //Setup alphabet string
+    std::string const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    std::vector<char> remainingLetters;
+    CreateAlphabeteVector(alphabet, OUT &remainingLetters);
+    
+    //Get a word
     std::string word = GetWordFromFile::GetWordToGuess();
     std::string playerGuess = "";
+    
     int remainingTries = 6;
-    bool hasWon = false;
+    bool hasWon = false;       
 
-    std::cout << "Hello!" << "Debug text || Word To Guess: " << word << std::endl;
+    std::cout << "Hello!" << "Debug text || Word To Guess: " /*<< word*/ << std::endl;
 
     //Loop while we still have tries left
     while (remainingTries > 0)
@@ -44,29 +53,36 @@ int main()
         std::cout << std::endl << "Remaining attempts: " << remainingTries <<" | Type your guess:" << std::endl;
         std::cin >> playerGuess;
 
-        hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries);
+        //hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,setupAlphabet);
+        hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,remainingLetters);
 
         if (hasWon) break;
     }
 
-    GameOver(hasWon);
+    GameOver(hasWon, word);
 
     //Wait for any type of input before closing the app
     std::cin >> playerGuess;
     return 0;
-    std::cout << FOREGROUND(ForegroundColor::BrightRed, "Hello world!") << std::endl;
-    std::cout << BACKGROUND(BackgroundColor::BrightRed, "Hello world!") << std::endl;
 }
 
-void GameOver(bool hasWon)
+void CreateAlphabeteVector(const std::string& alphabet, std::vector<char>* vec)
+{
+    for (int i = 0; i < alphabet.length(); ++i)
+    {
+        vec->push_back(std::toupper(alphabet[i]));
+    }
+}
+
+void GameOver(bool hasWon, std::string word)
 {
     if (!hasWon)
     {
-        std::cout << std::endl<< BACKGROUND(BackgroundColor::Red,"You lost, better luck next time!");
+        std::cout << std::endl<< BACKGROUND(BackgroundColor::Red,"You lost, better luck next time! The correct word was: " << word << std::endl);
     }
     else
     {
-        std::cout << std::endl<< BACKGROUND(BackgroundColor::BrightGreen,"Congratulations, you guesses the correct word!");
+        std::cout << std::endl<< BACKGROUND(BackgroundColor::BrightGreen,"Congratulations, you guessed the correct word!") << std::endl;
     }
 }
 
