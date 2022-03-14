@@ -26,9 +26,6 @@ enum class BackgroundColor : int {
     BrightYellow = 103
 };
 
-
-
-
 bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int& remainingTries)
 {
     bool hasGuessedCorrectWord = true;
@@ -44,17 +41,19 @@ bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int&
         {
             //If the 'player' has written a word with multiples of one letter, we check if the word has more than one of that letter, otherwise we print the n-th instance of the letter as grey.
             bool letterIsValid = false;
-            if (letterCounter[playerGuess[i]] > 0)
+            if (letterCounter[std::toupper(playerGuess[i])] > 0)
             {
                 letterIsValid = true;
                 letterCounter[playerGuess[i]]--;
             }
+
+            bool CaseInsensitiveCompare = std::tolower(playerGuess[i]) == std::tolower(word[i]);
             
-            if (std::tolower(playerGuess[i]) == std::tolower(word[i]) && letterIsValid)
+            if (CaseInsensitiveCompare && letterIsValid)
             {
                 std::cout << BACKGROUND(BackgroundColor::Green,playerGuess[i]);
             }                
-            else if ((word.find(std::toupper(playerGuess[i])) != std::string::npos) || (word.find(std::tolower(playerGuess[i]))!= std::string::npos) && letterIsValid)
+            else if ( letterIsValid && (word.find(std::toupper(playerGuess[i])) != std::string::npos) || (word.find(std::tolower(playerGuess[i]))!= std::string::npos))
             {
                 std::cout << BACKGROUND(BackgroundColor::BrightYellow,playerGuess[i]);
                 hasGuessedCorrectWord = false;
@@ -63,10 +62,7 @@ bool CheckLetters::CheckWord(std::string word, std::string playerGuess, OUT int&
             {
                 std::cout << playerGuess[i];
                 hasGuessedCorrectWord = false;
-            }
-
-            //todo remove this debug
-            //std::cout << "Letter: " << playerGuess[i] << " Count: " << letterCounter[playerGuess[i]] << std::endl;
+            }            
         }
         remainingTries--;
     }

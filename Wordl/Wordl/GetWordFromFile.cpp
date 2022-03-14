@@ -1,9 +1,24 @@
 ﻿#include "GetWordFromFile.h"
 
+#include <fstream>
+#include <iostream>
+#include <unordered_set>
+
 std::string GetWordFromFile::GetWordToGuess()
 {
-    //todo get word from file
+    std::ifstream inputFile("words.txt");
+    std::string curLine = "";
+    std::vector<std::string> strVec;
+    srand(time(0)); //initialize pseudo-random
     
-    std::string wordFromFile = "aabbcc";
+    int i = 0;
+    while (std::getline(inputFile, curLine))
+    {
+        strVec.push_back(curLine);
+    }
+
+    auto word = strVec[rand() % strVec.size()];
+    
+    std::string wordFromFile = word;
     return wordFromFile;
 }
