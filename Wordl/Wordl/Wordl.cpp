@@ -45,7 +45,7 @@ int main()
     int remainingTries = 6;
     bool hasWon = false;       
 
-    std::cout << "Hello! " /*<< "Debug text || Word To Guess: " << word*/ << std::endl;
+    std::cout << "Hello! " << "Debug text || Word To Guess: " << word << std::endl;
 
     //Loop while we still have tries left
     while (remainingTries > 0)
