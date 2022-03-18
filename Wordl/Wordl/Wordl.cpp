@@ -29,44 +29,69 @@ enum class BackgroundColor : int {
 
 void GameOver(bool hasWon, std::string str);
 void CreateAlphabeteVector(const std::string& alphabet, std::vector<char>* vec);
-
+void SetupGame(std::vector<char>& remainingLetters, std::string& word, std::string& playerGuess, int& remainingTries, bool& hasWon);
 
 int main()
 {
-    //Setup alphabet string
-    std::string const alphabet = "abcdefghijklmnopqrstuvwxyz";
     std::vector<char> remainingLetters;
-    CreateAlphabeteVector(alphabet, OUT &remainingLetters);
+    std::string word;
+    std::string playerGuess;
+    int remainingTries;
+    bool hasWon;
+    std::string playerInput;
     
-    //Get a word
-    std::string word = GetWordFromFile::GetWordToGuess();
-    std::string playerGuess = "";
-    
-    int remainingTries = 6;
-    bool hasWon = false;       
+    SetupGame(remainingLetters, word, playerGuess, remainingTries, hasWon);
 
     std::cout << "Hello! " /*<< "Debug text || Word To Guess: " << word */<< std::endl;
 
     //Loop while we still have tries left
-    while (remainingTries > 0)
-    {
-        std::cout << std::endl << "Remaining attempts: " << remainingTries <<" | Type your guess:" << std::endl;
-        std::cin >> playerGuess;
+    bool playAgain = true;
+    while (playAgain)
+    {        
+        while (remainingTries > 0)
+        {
+            std::cout << std::endl << "Remaining attempts: " << remainingTries <<" | Type your guess:" << std::endl;
+            std::cin >> playerGuess;
         
-        hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,remainingLetters);
+            hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,remainingLetters);
 
-        if (hasWon) break;
+            if (hasWon) break;
+        }
+
+        GameOver(hasWon, word);
+
+        std::cout << "Do you wish to play again? Write 'Y', otherwise write anything else.." << std::endl;
+        std::cin >> playerInput;
+
+        if (playerInput.length() == 1 && std::toupper(playerInput[0]) == 'Y')
+        {
+            playAgain = true;
+            SetupGame(remainingLetters, word, playerGuess, remainingTries, hasWon);
+        }
+        else
+        {
+            playAgain = false;
+        }
     }
-
-    GameOver(hasWon, word);
-
-    //Wait for any type of input before closing the app
-    std::cin >> playerGuess;
     return 0;
+}
+
+void SetupGame(std::vector<char>& remainingLetters, std::string& word, std::string& playerGuess, int& remainingTries, bool& hasWon)
+{
+    //Setup alphabet string
+    std::string const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    CreateAlphabeteVector(alphabet, OUT &remainingLetters);
+
+    word = GetWordFromFile::GetWordToGuess();
+    playerGuess = "";
+
+    remainingTries = 6;
+    hasWon = false;
 }
 
 void CreateAlphabeteVector(const std::string& alphabet, std::vector<char>* vec)
 {
+    vec->clear();
     for (int i = 0; i < alphabet.length(); ++i)
     {
         vec->push_back(std::toupper(alphabet[i]));
