@@ -20,7 +20,6 @@ std::string GetWordFromFile::GetWordToGuess()
     const auto word = strVec[rand() % strVec.size()];
     
     std::string wordFromFile = word;    
-    //std::string wordFromFile = "FESSER"; //todo remove this debug line
 
     return wordFromFile;
 }

@@ -45,15 +45,14 @@ int main()
     int remainingTries = 6;
     bool hasWon = false;       
 
-    std::cout << "Hello! " << "Debug text || Word To Guess: " << word << std::endl;
+    std::cout << "Hello! " /*<< "Debug text || Word To Guess: " << word */<< std::endl;
 
     //Loop while we still have tries left
     while (remainingTries > 0)
     {
         std::cout << std::endl << "Remaining attempts: " << remainingTries <<" | Type your guess:" << std::endl;
         std::cin >> playerGuess;
-
-        //hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,setupAlphabet);
+        
         hasWon = CheckLetters::CheckWord(word, playerGuess, OUT remainingTries,remainingLetters);
 
         if (hasWon) break;
