@@ -35,13 +35,6 @@ enum TupleHelper
     Indices
 };
 
-enum LetterColor
-{
-    Green,
-    Yellow,
-    Grey,
-    Debug
-};
 
 bool CheckLetters::CheckWord(std::string word, std::string playerGuess, int& remainingTries,std::vector<char>& remainingLetters)
 {
@@ -52,7 +45,7 @@ bool CheckLetters::CheckWord(std::string word, std::string playerGuess, int& rem
     std::unordered_map<char, std::tuple<int, std::vector<int>>> letterCounterInPlayerGuess;
 
     //index + green/yellow/nothing
-    std::unordered_map<int, int> letterColor;
+    std::unordered_map<int, LetterColor> letterColor;
     std::vector<int> nonGreenIndex;
 
     if (playerGuess.length() == word.length())
@@ -168,7 +161,7 @@ std::unordered_map<char, std::tuple<int, std::vector<int>>> CheckLetters::MakeHa
     return letterCounter;
 }
 
-void CheckLetters::PrintColoredLetters(std::string playerGuess, std::unordered_map<int, int> letterColor)
+void CheckLetters::PrintColoredLetters(std::string playerGuess, std::unordered_map<int, LetterColor> letterColor)
 {
     //Print all
     for (int i = 0; i < playerGuess.length(); ++i)
