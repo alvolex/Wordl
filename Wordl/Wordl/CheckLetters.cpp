@@ -136,6 +136,7 @@ void CheckLetters::CreateAlphabeteVector(const std::string& alphabet, OUT std::v
 
 std::unordered_map<char, std::tuple<int, std::vector<int>>> CheckLetters::MakeHashMapOfLetterCount(std::string word)
 {
+    // feedback: does this have to be such complicated data structure?
     std::unordered_map<char, std::tuple<int, std::vector<int>>> letterCounter;
 
     std::vector<int> indexVector;
