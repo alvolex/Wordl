@@ -21,5 +21,5 @@ std::string GetWordFromFile::GetWordToGuess()
     
     std::string wordFromFile = word;    
 
-    return wordFromFile;
+    return wordFromFile; // feedback: those 3 lines could be one: return strVec[rand() % strVec.size()];
 }

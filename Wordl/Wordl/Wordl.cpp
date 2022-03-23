@@ -91,6 +91,8 @@ void SetupGame(std::vector<char>& remainingLetters, std::string& word, std::stri
 
 void CreateAlphabeteVector(const std::string& alphabet, std::vector<char>* vec)
 {
+    // feedback: not sure I understand the purpose of this function. If you needed an array of alphabet letters you could just create it statically?
+    // The further manipulations on this array in CheckLetters::CheckWord are also unclear for me. Feels like it should be easier way to achieve the goal.
     vec->clear();
     for (int i = 0; i < alphabet.length(); ++i)
     {
